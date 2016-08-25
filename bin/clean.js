@@ -1,13 +1,16 @@
-'use strict';
 
-const RimRaf = require('rimraf');
-const Path = require('path');
-const Fs = require('fs');
+var rimraf = require('rimraf');
+var path = require('path');
+var fs = require('fs');
 
-const dir = Path.resolve(__dirname,'../build');
+var dir = path.resolve(__dirname,'../build');
 
-RimRaf(dir, function (err) {
-    if (err) throw err;
+rimraf(dir, function (err) {
+  if (err) {
+    throw err;
+  }
 
-    if (process.argv.indexOf('createdir') >= 0) Fs.mkdirSync(dir);
+  if (process.argv.indexOf("createdir") >= 0) {
+    fs.mkdirSync(dir);
+  }
 });

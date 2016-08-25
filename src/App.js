@@ -1,180 +1,98 @@
 'use strict';
 
-const History = require('history');
-const Dom = require('ndom');
-const App = require('react-redux-oop').App;
+const HomeView = require('./scripts/views/HomeView');
+const PostView = require('./scripts/views/PostView');
+const UserView = require('./scripts/views/UserView');
+const HomeController = require('./scripts/controllers/HomeController');
+const PostController = require('./scripts/controllers/PostController');
+const UserController = require('./scripts/controllers/UserController');
+const AuthorizationService = require('./scripts/libs/AuthorizationService');
+const Requester = require('./scripts/libs/Requester');
 
-const Nav = require('./controllers/Nav');
-const Container = require('./app/AppContainer');
-const Reducers = require('./app/AppReducers');
-const Routes = require('./Routes');
-const Pages = require('./pages');
+import {initEventServices, showPopup, onRoute, bindEventHandler, run, triggerEvent, redirectUrl} from './scripts/libs/framework';
+require('./styles/style.less');
+require('./styles/form-style.css');
+require('./styles/main-style.css');
+require('./styles/new-post-style.css');
 
-class Application extends App {
-    /**
-     * @type {Object}
-     * @private
-     */
-    _history = null;
+(function createApp() {
 
-    /**
-     * @type {Object}
-     * @private
-     */
-    _initialData = {};
+    // Create your own kinvey application
 
-    /**
-     * @type {Container}
-     * @private
-     */
-    _render = null;
+    let baseUrl = "https://baas.kinvey.com";
+    let appKey = "kid_SJu1XCSK"; // Place your appKey from Kinvey here...
+    let appSecret = "d1fe226ed4664a33b93d726845fe9c79"; // Place your appSecret from Kinvey here...
+    let _guestCredentials = "ee209af4-7f4f-4be6-ace8-1a01a609600b.Bj7Cd4NVcNMjJy+pFC6fZVjqWmg75kI3OqYOhTr/gDE="; // Create a guest user using PostMan/RESTClient/Fiddler and place his authtoken here...
 
-    /**
-     * @type {Object}
-     * @private
-     */
-    _reducers = null;
+    //Create AuthorizationService and Requester
+    console.log(AuthorizationService);
+    let AuthService = new AuthorizationService(baseUrl, appKey, appSecret, _guestCredentials);
+    let requester = new Requester(AuthService);
 
-    /**
-     *
-     */
-    constructor() {
-        super({});
+    AuthService.initAuthorizationType("Kinvey");
 
-        this._render = Container;
+    let selector = ".wrapper";
+    let mainContentSelector = ".main-content";
 
-        // Bootstrap
+    // Create HomeView, HomeController, UserView, UserController, PostView and PostController
+    console.log(HomeView);
+    let homeView = new HomeView(mainContentSelector, selector);
+    let homeController = new HomeController(homeView, requester, baseUrl, appKey);
 
-        if (process.env.NODE_ENV !== 'production') {
-            this._setupDevTools();
-            this._setupDebugMenu();
-        }
+    let postView = new PostView(mainContentSelector, selector);
+    let postController = new PostController(postView, requester, baseUrl, appKey);
 
-        // Create navigation
+    let userView = new UserView(mainContentSelector, selector);
+    let userController = new UserController(userView, requester, baseUrl, appKey);
 
-        this._history = History.createHistory();
-        this._historyInitiated = false;
+    initEventServices();
 
-        this.configure();
+    onRoute("#/", function () {
+        // Check if user is logged in and if its not show the guest page, otherwise show the user page...
+        homeController.showPage(AuthService.isLoggedIn(), showPopup);
+    });
 
-        this._nav = new Nav(this._store);
-        this._store.addReducers(Reducers);
-        this._store.on('state', this._stateHandler.bind(this));
+    onRoute("#/post-:id", function () {
+        // Create a redirect to one of the recent posts...
+    });
 
-        this._store.dispatch({type: 'APP_INIT'});
-    }
+    onRoute("#/login", function () {
+        // Show the login page...
+        userController.showLoginPage(AuthService.isLoggedIn(), triggerEvent);
+    });
 
-    /**
-     * @param {Object} [data]
-     */
-    start(data = {}) {
-        this._initialData = data || {};
+    onRoute("#/register", function () {
+        // Show the register page...
+        userController.showRegisterPage(AuthService.isLoggedIn(), triggerEvent);
+    });
 
-        this._history.listen(this._historyHandler.bind(this));
-        Dom('body').on('click', 'a', this._linkHandler.bind(this));
-    }
+    onRoute("#/logout", function () {
+        // Logout the current user...
+        userController.logout(redirectUrl);
+    });
 
-    /**
-     * @private
-     */
-    _setupDevTools() {
-        this._addMiddleware(require('redux-immutable-state-invariant')());
-        this._addMiddleware(require('redux-logger')({collapsed: true, duration: true}));
+    onRoute('#/posts/create', function () {
+        // Show the new post page...
 
-        let matches = window.location.href.match(/[?&]_debug=([^&]+)\b/);
-        let session = (matches && matches.length) ? matches[1] : null;
+        let fullname = sessionStorage.getItem('fullName');
+        postController.showCreatePostsPage(fullname, AuthService.isLoggedIn(), triggerEvent);
+    });
 
-        let devTools = null;
-        if (window['devToolsExtension']) devTools = window['devToolsExtension']();
+    bindEventHandler('login', function (ev, data) {
+        // Login the user...
+        console.log(data);
+        userController.login(data, showPopup, redirectUrl);
+    });
 
-        if (devTools) this._addEnhancer(devTools);
-        if (session) this._addEnhancer(require('redux-devtools').persistState(session));
-    }
+    bindEventHandler('register', function (ev, data) {
+        // Register a new user...
+        userController.register(data, showPopup, redirectUrl);
+    });
 
-    /**
-     * @private
-     */
-    _setupDebugMenu() {
+    bindEventHandler('createPost', function (ev, data) {
+        // Create a new post...
+        postController.createPost(data, showPopup, redirectUrl);
+    });
 
-    }
-
-    /**
-     * @param {MouseEvent} event
-     * @private
-     */
-    _linkHandler(event) {
-        let link = event['realTarget'];
-        let target = link.target;
-        let href = link.getAttribute('href');
-
-        if (
-            event.shiftKey || event.ctrlKey || event.which !== 1 ||
-            (target && target.toLowerCase() !== '_self') ||
-            href.indexOf('//') == 0 || (href.indexOf('://') <= 5 && href.indexOf('://') > -1)
-        ) return;
-
-        event.preventDefault();
-
-        if (href === '#') return;
-
-        this._history.push(href);
-    }
-
-    /**
-     * @param {{pathname: string, search: string, hash: string, action: string, state: Object}} location
-     * @private
-     */
-    _historyHandler(location) {
-        let action = location.action;
-        let href = location.pathname + location.search + location.hash;
-        let state = location.state || {};
-
-        if (!this._historyInitiated) {
-            console.log('History INIT:', href);
-            this._historyInitiated = true;
-            this._nav.init(href, this._initialData ? this._initialData.result : {}, this._initialData ? this._initialData.error : null);
-            return;
-        }
-
-        console.log('History ' + action + ':', href, state);
-
-        this._nav.navigate(href);
-    }
-
-    /**
-     * @param {Object} state
-     * @private
-     */
-    _stateHandler(state) {
-        let route = state.location && state.location.active.route;
-        let error = state.location.active.error;
-
-        if (error) route = {
-            page: 'Error',
-            props: {},
-            partial: false
-        };
-
-        if (route) {
-            let reducers = Pages[route.page].Reducers;
-            let data = state.location.active.data || state.location.active.error;
-
-            if (this._reducers !== reducers) {
-                this._store.removeReducers(this._reducers || {});
-                this._store.addReducers(reducers);
-
-                this._reducers = reducers;
-            }
-
-
-            if (this._data !== data) {
-                this._data = data;
-
-                this._store.dispatch({type: 'PAGE_READY', ...route, data: data});
-            }
-        }
-    }
-}
-
-
-module.exports = Application;
+    run('#/');
+})();

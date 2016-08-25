@@ -1,26 +1,28 @@
 {
-  "name": "softwaretechnologie",
-  "version": "2.0.0",
-  "license": "UNLICENSED",
-  "private": true,
+  "name": "technologiesproject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "webpack.config.js",
+  "bin": {
+    "technologiesproject": "buildHtml.js"
+  },
   "scripts": {
+    "clean:build": "node ./bin/clean.js createdir",
+    "build:html": "node ./bin/buildHtml.js",
     "prestart": "node ./bin/clean.js",
     "start": "webpack-dev-server --config ./webpack.config.dev.js --hot --inline --progress",
-    "clean:build": "node ./bin/clean.js createdir",
-    "prebuild": "npm run clean:build",
+    "prebuild": "npm run clean:build && npm run build:html",
     "build": "SET NODE_ENV=production& NODE_ENV=production& webpack -p --config ./webpack.config.prod.js --progress"
   },
   "dependencies": {
-    "@newton-software/nbl": "*",
-    "@newton-software/nrc": "*",
     "classnames": "2.2.3",
     "console-polyfill": "^0.2.2",
-    "eventemitter3": "1.2.0",
-    "framework": "0.0.0",
+    "eventemitter3": "^1.2.0",
     "highcharts": "^4.2.0",
     "history": "2.1.0",
     "isomorphic-fetch": "2.2.1",
     "jquery": "^3.1.0",
+    "kinvey": "^1.6.8",
     "moment": "^2.14.1",
     "mustache": "^2.2.1",
     "ndom": "^1.0.1",
@@ -28,12 +30,12 @@
     "react-addons-pure-render-mixin": "^15.1.0",
     "react-dom": "^15.0.1",
     "react-redux": "4.4.5",
-    "react-redux-oop": "^1.0.5",
+    "react-redux-oop": "^1.0.10",
     "redux": "3.5.2",
     "redux-logger": "2.6.1",
     "redux-thunk": "2.1.0",
     "sammy": "^0.7.6",
-    "seamless-immutable": "6.1.0",
+    "seamless-immutable": "^6.1.1",
     "simple-iso-countries": "0.0.3"
   },
   "devDependencies": {
@@ -66,13 +68,12 @@
     "webpack": "latest",
     "webpack-dev-server": "latest"
   },
-  "description": "SoftUni Project",
-  "main": "app.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tr31ze/SoftwareTechnologies.git"
   },
-  "author": "",
+  "author": "Borislav",
+  "license": "ISC",
   "bugs": {
     "url": "https://github.com/tr31ze/SoftwareTechnologies/issues"
   },
