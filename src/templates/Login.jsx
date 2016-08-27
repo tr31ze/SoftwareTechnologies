@@ -17,11 +17,12 @@ class Login extends Component {
             password: this.refs.password.value
         };
         this.props.triggerEvent('login', data);
+        this.forceUpdate();
     }
 
     render() {
         return (
-            <div>
+            <div className="login-page">
                 <header className="blog-title">
                     login
                 </header>

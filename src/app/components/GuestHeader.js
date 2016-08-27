@@ -1,14 +1,13 @@
 'use strict';
 
 const React = require('react');
-const Component = require('../../../base/Component');
+const Component = require('../../base/Component');
 
-const RecentPosts = require('./../../RecentPosts');
 
-class SideBar extends Component {
+class Header extends Component {
     render() {
         return (
-            <aside className="sidebar">
+            <header className="header">
                 <div className="logo"><img src="images/logo_sidebar.png" alt=""/></div>
                 <nav>
                     <ul>
@@ -31,15 +30,10 @@ class SideBar extends Component {
                         </li>
                     </ul>
 
-                    <h2 className="recent-posts-title">Recent Posts</h2>
-                    <hr/>
-
-                    <RecentPosts posts={this.props.posts} />
-
                 </nav>
-            </aside>
+            </header>
         )
     }
 }
 
-module.exports = SideBar;
+module.exports = Header;

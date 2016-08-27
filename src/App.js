@@ -1,5 +1,9 @@
 'use strict';
 
+const App = require('react-redux-oop').App;
+const Container = require('./app/AppContainer');
+const Reducers = require('./app/AppReducers');
+
 const HomeView = require('./scripts/views/HomeView');
 const PostView = require('./scripts/views/PostView');
 const UserView = require('./scripts/views/UserView');
@@ -11,88 +15,131 @@ const Requester = require('./scripts/libs/Requester');
 
 import {initEventServices, showPopup, onRoute, bindEventHandler, run, triggerEvent, redirectUrl} from './scripts/libs/framework';
 require('./styles/style.less');
-require('./styles/form-style.css');
-require('./styles/main-style.css');
-require('./styles/new-post-style.css');
 
-(function createApp() {
+class Application extends App {
 
-    // Create your own kinvey application
+    /**
+     * @type {Object}
+     * @private
+     */
+    _initialData = {};
 
-    let baseUrl = "https://baas.kinvey.com";
-    let appKey = "kid_SJu1XCSK"; // Place your appKey from Kinvey here...
-    let appSecret = "d1fe226ed4664a33b93d726845fe9c79"; // Place your appSecret from Kinvey here...
-    let _guestCredentials = "ee209af4-7f4f-4be6-ace8-1a01a609600b.Bj7Cd4NVcNMjJy+pFC6fZVjqWmg75kI3OqYOhTr/gDE="; // Create a guest user using PostMan/RESTClient/Fiddler and place his authtoken here...
+    /**
+     * @type {Container}
+     * @private
+     */
+    _render = null;
 
-    //Create AuthorizationService and Requester
-    console.log(AuthorizationService);
-    let AuthService = new AuthorizationService(baseUrl, appKey, appSecret, _guestCredentials);
-    let requester = new Requester(AuthService);
+    /**
+     * @type {Object}
+     * @private
+     */
+    _reducers = null;
 
-    AuthService.initAuthorizationType("Kinvey");
+    constructor() {
+        super({});
 
-    let selector = ".wrapper";
-    let mainContentSelector = ".main-content";
+        this._render = Container;
 
-    // Create HomeView, HomeController, UserView, UserController, PostView and PostController
-    console.log(HomeView);
-    let homeView = new HomeView(mainContentSelector, selector);
-    let homeController = new HomeController(homeView, requester, baseUrl, appKey);
+        // Bootstrap
 
-    let postView = new PostView(mainContentSelector, selector);
-    let postController = new PostController(postView, requester, baseUrl, appKey);
+        if (process.env.NODE_ENV !== 'production') {
+            this._setupDevTools();
+            this._setupDebugMenu();
+        }
 
-    let userView = new UserView(mainContentSelector, selector);
-    let userController = new UserController(userView, requester, baseUrl, appKey);
+        this.configure();
 
-    initEventServices();
+        this._store.addReducers(Reducers);
 
-    onRoute("#/", function () {
-        // Check if user is logged in and if its not show the guest page, otherwise show the user page...
-        homeController.showPage(AuthService.isLoggedIn(), showPopup);
-    });
+        this.baseUrl = "https://baas.kinvey.com";
+        this.appKey = "kid_SJu1XCSK";
+        this.appSecret = "d1fe226ed4664a33b93d726845fe9c79";
+        this._guestCredentials = "ee209af4-7f4f-4be6-ace8-1a01a609600b.Bj7Cd4NVcNMjJy+pFC6fZVjqWmg75kI3OqYOhTr/gDE=";
 
-    onRoute("#/post-:id", function () {
-        // Create a redirect to one of the recent posts...
-    });
+        this._AuthService = new AuthorizationService(this.baseUrl, this.appKey, this.appSecret, this._guestCredentials);
+        this._requester = new Requester(this._AuthService);
 
-    onRoute("#/login", function () {
-        // Show the login page...
-        userController.showLoginPage(AuthService.isLoggedIn(), triggerEvent);
-    });
+        this._AuthService.initAuthorizationType("Kinvey");
 
-    onRoute("#/register", function () {
-        // Show the register page...
-        userController.showRegisterPage(AuthService.isLoggedIn(), triggerEvent);
-    });
+        this.selector = ".wrapper";
+        this.mainContentSelector = ".main-content";
 
-    onRoute("#/logout", function () {
-        // Logout the current user...
-        userController.logout(redirectUrl);
-    });
+        this.homeView = new HomeView(this.mainContentSelector, this.selector);
+        this.homeController = new HomeController(this.homeView, this._requester, this.baseUrl, this.appKey);
 
-    onRoute('#/posts/create', function () {
-        // Show the new post page...
+        this.postView = new PostView(this.mainContentSelector, this.selector);
+        this.postController = new PostController(this.postView, this._requester, this.baseUrl, this.appKey);
 
-        let fullname = sessionStorage.getItem('fullName');
-        postController.showCreatePostsPage(fullname, AuthService.isLoggedIn(), triggerEvent);
-    });
+        this.userView = new UserView(this.mainContentSelector, this.selector);
+        this.userController = new UserController(this.userView, this._requester, this.baseUrl, this.appKey);
 
-    bindEventHandler('login', function (ev, data) {
-        // Login the user...
-        console.log(data);
-        userController.login(data, showPopup, redirectUrl);
-    });
+        initEventServices();
 
-    bindEventHandler('register', function (ev, data) {
-        // Register a new user...
-        userController.register(data, showPopup, redirectUrl);
-    });
+        this._homeRouteHandler = () => this.homeController.showPage(this._AuthService.isLoggedIn(), showPopup, this._store);
 
-    bindEventHandler('createPost', function (ev, data) {
-        // Create a new post...
-        postController.createPost(data, showPopup, redirectUrl);
-    });
+        onRoute("#/", this._homeRouteHandler);
 
-    run('#/');
-})();
+
+        onRoute("#/post-:id", function () {
+
+        });
+
+        this._showLoginHandler = () => this.userController.showLoginPage(this._AuthService.isLoggedIn(), triggerEvent, this._store);
+        onRoute("#/login", this._showLoginHandler);
+
+        this._showRegisterHandler = () => this.userController.showRegisterPage(this._AuthService.isLoggedIn(), triggerEvent, this._store);
+        onRoute("#/register", this._showRegisterHandler);
+
+        this._logoutHandler = () => this.userController.logout(redirectUrl, this._store);
+        onRoute("#/logout", this._logoutHandler);
+
+        this._showCreatePostsHandler = () => {
+            let fullname = sessionStorage.getItem('fullName');
+            this.postController.showCreatePostsPage(fullname, this._AuthService.isLoggedIn(), triggerEvent, this._store);
+        };
+        onRoute('#/posts/create', this._showCreatePostsHandler);
+
+        this._loginHandler = (ev, data) => this.userController.login(data, showPopup, redirectUrl, this._store);
+        bindEventHandler('login', this._loginHandler);
+
+        this._registerHandler = (ev, data) => this.userController.register(data, showPopup, redirectUrl, this._store);
+        bindEventHandler('register', this._registerHandler);
+
+        this._createPost = (ev, data) => this.postController.createPost(data, showPopup, redirectUrl, this._store);
+        bindEventHandler('createPost', this._createPost);
+
+        run('#/');
+
+        this._store.dispatch({type: 'APP_INIT'});
+    }
+
+    /**
+     * @private
+     */
+    _setupDevTools() {
+        this._addMiddleware(require('redux-immutable-state-invariant')());
+        this._addMiddleware(require('redux-logger')({collapsed: true, duration: true}));
+
+        let matches = window.location.href.match(/[?&]_debug=([^&]+)\b/);
+        let session = (matches && matches.length) ? matches[1] : null;
+
+        let devTools = null;
+        if (window['devToolsExtension']) devTools = window['devToolsExtension']();
+
+        if (devTools) this._addEnhancer(devTools);
+        if (session) this._addEnhancer(require('redux-devtools').persistState(session));
+    }
+
+    /**
+     * @private
+     */
+    _setupDebugMenu() {
+
+    }
+};
+
+window.onload = () => {
+    let app = new Application();
+    setTimeout(() => app.renderTo(document.getElementById('app')), 0);
+};

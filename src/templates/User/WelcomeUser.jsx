@@ -3,17 +3,34 @@
 const React = require('react');
 const Component = require('../../base/Component');
 
-const SideBar = require('./components/SideBar');
 const MainContent = require('./components/MainContent');
+const CreatePost = require('../CreatePost');
 const Footer = require('../Footer');
 
+let MainComponent = null;
+
 class WelcomeUser extends Component {
+    _renderView() {
+        switch(this.props.location) {
+            case 'create-post':
+                MainComponent = <CreatePost triggerEvent={this.props.triggerEvent}/>;
+                break;
+            case 'register':
+                MainComponent = <Register />;
+                break;
+            default:
+                MainComponent = <MainContent posts={this.props.posts} />;
+                break;
+        }
+        return MainComponent;
+    }
+
     render() {
+
         return (
+
             <div>
-                <SideBar posts={this.props.recentPosts} />
-                <MainContent posts={this.props.blogPosts} />
-                <Footer/>
+                {this._renderView()}
             </div>
         )
     }

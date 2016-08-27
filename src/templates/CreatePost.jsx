@@ -28,9 +28,9 @@ class CreatePost extends Component {
 
     render() {
         return (
-            <div>
+            <div className="new-post-wrapper">
                 <div className="new-post-block">
-                    <h2 id="editor-title">new post</h2>
+                    <h2 id="editor-title">New post</h2>
                     <form id="post-form">
                         <ul className="title-author">
                             <li className="single-element-form">

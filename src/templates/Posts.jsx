@@ -6,7 +6,7 @@ const Component = require('../base/Component');
 class Posts extends Component {
 
     static propTypes = {
-        posts: React.PropTypes.any.isRequired
+        posts: React.PropTypes.any
     };
 
     renderPosts() {
@@ -26,6 +26,7 @@ class Posts extends Component {
     }
 
     render() {
+        if(!this.props.posts) return <div></div>
         return (
             <ul key="posts" className="articles" id="article">
                 {this.renderPosts()}
