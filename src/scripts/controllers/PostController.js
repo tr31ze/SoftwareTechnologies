@@ -1,8 +1,7 @@
 'use strict';
 
 module.exports = class PostController {
-    constructor(postView, requester, baseUrl, appKey) {
-        this._postView = postView;
+    constructor(requester, baseUrl, appKey) {
         this._requester = requester;
         this._appKey = appKey;
         this._baseServiceUrl = baseUrl + "/appdata/" + appKey + "/posts";

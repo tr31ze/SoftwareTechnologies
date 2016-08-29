@@ -4,9 +4,6 @@ const App = require('react-redux-oop').App;
 const Container = require('./app/AppContainer');
 const Reducers = require('./app/AppReducers');
 
-const HomeView = require('./scripts/views/HomeView');
-const PostView = require('./scripts/views/PostView');
-const UserView = require('./scripts/views/UserView');
 const HomeController = require('./scripts/controllers/HomeController');
 const PostController = require('./scripts/controllers/PostController');
 const UserController = require('./scripts/controllers/UserController');
@@ -65,14 +62,11 @@ class Application extends App {
         this.selector = ".wrapper";
         this.mainContentSelector = ".main-content";
 
-        this.homeView = new HomeView(this.mainContentSelector, this.selector);
-        this.homeController = new HomeController(this.homeView, this._requester, this.baseUrl, this.appKey);
+        this.homeController = new HomeController(this._requester, this.baseUrl, this.appKey);
 
-        this.postView = new PostView(this.mainContentSelector, this.selector);
-        this.postController = new PostController(this.postView, this._requester, this.baseUrl, this.appKey);
+        this.postController = new PostController(this._requester, this.baseUrl, this.appKey);
 
-        this.userView = new UserView(this.mainContentSelector, this.selector);
-        this.userController = new UserController(this.userView, this._requester, this.baseUrl, this.appKey);
+        this.userController = new UserController(this._requester, this.baseUrl, this.appKey);
 
         initEventServices();
 

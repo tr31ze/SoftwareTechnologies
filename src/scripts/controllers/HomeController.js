@@ -4,8 +4,7 @@ require('../libs/framework');
 import {showPopup} from '../libs/framework';
 
 module.exports = class HomeController {
-    constructor(homeView, requester, baseUrl, appKey) {
-        this._homeView = homeView;
+    constructor( requester, baseUrl, appKey) {
         this._requester = requester;
 
         this._appKey = appKey;

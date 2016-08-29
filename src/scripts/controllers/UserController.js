@@ -1,8 +1,7 @@
 'use strict';
 
 module.exports = class UserController {
-    constructor(userView, requester, baseUrl, appKey) {
-        this._userView = userView;
+    constructor( requester, baseUrl, appKey) {
         this._requester = requester;
 
         this._appKey = appKey;
