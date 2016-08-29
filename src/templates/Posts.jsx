@@ -11,14 +11,17 @@ class Posts extends Component {
 
     renderPosts() {
         return this.props.posts.map((post, index) => {
-            let id = "post-" + post.postId;
+            let id = "post-" + (index + 1);
             return (
                 <li className="single-post" key={index}>
                     <article id={id}>
                         <div className="dot">&nbsp;</div>
-                        <h3 className="title">{post.title}</h3>
+                        <h3 className="title">
+                            {this.props.isLogged ? <a href={"#/" + id}>{post.title}</a> : post.title}
+                        </h3>
                         <p className="subtitle">Posted on {post.date} by {post.author}</p>
                         <p className="content">{post.content}</p>
+                        {this.props.isLogged ? <a href={"#/" + id} className="post-footer">Continue reading...</a> : <a href="#/login" className="post-footer">Login to see the full article</a>}
                     </article>
                 </li>
             )

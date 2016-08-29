@@ -17,6 +17,7 @@
   "dependencies": {
     "classnames": "2.2.3",
     "console-polyfill": "^0.2.2",
+    "elemental": "^0.6.1",
     "eventemitter3": "^1.2.0",
     "highcharts": "^4.2.0",
     "history": "2.1.0",
@@ -29,6 +30,7 @@
     "react": "^15.1.0",
     "react-addons-pure-render-mixin": "^15.1.0",
     "react-dom": "^15.0.1",
+    "react-modal": "^1.4.0",
     "react-redux": "4.4.5",
     "react-redux-oop": "^1.0.10",
     "redux": "3.5.2",

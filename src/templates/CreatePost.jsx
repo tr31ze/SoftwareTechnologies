@@ -39,7 +39,7 @@ class CreatePost extends Component {
                             </li>
                             <li className="single-element-form">
                                 <h1 className="title-form">Author:</h1>
-                                <input ref="author" type="text" value={this.props.name || "Guest"} placeholder={this.props.name || "Guest"} id="author" disabled  />
+                                <input ref="author" type="text" value={this.props.user.fullName || "Guest"} placeholder={this.props.user.fullName || "Guest"} id="author" disabled  />
                             </li>
                         </ul>
 

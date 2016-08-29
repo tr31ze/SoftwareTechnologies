@@ -11,15 +11,16 @@ let MainComponent = null;
 
 class WelcomeUser extends Component {
     _renderView() {
+        console.log(this.props);
         switch(this.props.location) {
             case 'create-post':
-                MainComponent = <CreatePost triggerEvent={this.props.triggerEvent}/>;
+                MainComponent = <CreatePost triggerEvent={this.props.triggerEvent} user={this.props.user}/>;
                 break;
             case 'register':
                 MainComponent = <Register />;
                 break;
             default:
-                MainComponent = <MainContent posts={this.props.posts} />;
+                MainComponent = <MainContent isLogged={this.props.isLogged} modal={this.props.modal} closeModal={this.props.closeModal} posts={this.props.posts} />;
                 break;
         }
         return MainComponent;

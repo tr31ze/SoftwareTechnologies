@@ -6,7 +6,11 @@ const AppState = {
     isLogged: false,
     location: 'home',
     posts: null,
-    recentPosts: null
+    recentPosts: null,
+    modal: {
+        isOpen: false,
+        post: null
+    }
 };
 
 

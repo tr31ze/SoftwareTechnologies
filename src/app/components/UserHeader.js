@@ -29,9 +29,6 @@ class Header extends Component {
                         </li>
                     </ul>
 
-                    <h2 className="recent-posts-title">Recent Posts</h2>
-                    <hr/>
-
                 </nav>
             </header>
         )

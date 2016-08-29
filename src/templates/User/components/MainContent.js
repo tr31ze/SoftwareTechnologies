@@ -4,6 +4,7 @@ const React = require('react');
 const Component = require('../../../base/Component');
 
 const Posts = require('./../../Posts');
+const Modal = require('../../Modal/Modal');
 
 class MainContent extends Component {
     render() {
@@ -12,7 +13,8 @@ class MainContent extends Component {
                 <header className="blog-title">
                     <h3>home</h3>
                 </header>
-                <Posts posts={this.props.posts}/>
+                <Posts isLogged={this.props.isLogged} posts={this.props.posts}/>
+                <Modal isOpen={this.props.modal.isOpen} post={this.props.modal.post} closeModal={this.props.closeModal}></Modal>
             </main>
         )
     }

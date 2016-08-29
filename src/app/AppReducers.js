@@ -30,6 +30,27 @@ const AppReducers = {
         ]
     },
 
+    'SINGLE_POST': {
+        '*': [
+            (state = AppState, action) => {
+                let post = state.posts[action.postId - 1];
+                return state
+                    .setIn(['modal', 'post'], post)
+                    .setIn(['modal', 'isOpen'], true)
+            }
+        ]
+    },
+
+    'CLEAR_MODAL': {
+        'modal': [
+            (state = AppState.modal) => {
+                return state
+                    .set('isOpen', false)
+                    .set('post', null)
+            }
+        ]
+    },
+
     'LOGIN': {
         '*': [
             (state = AppState, action) => {
