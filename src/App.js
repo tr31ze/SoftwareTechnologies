@@ -4,9 +4,6 @@ const App = require('react-redux-oop').App;
 const Container = require('./app/AppContainer');
 const Reducers = require('./app/AppReducers');
 
-const HomeView = require('./scripts/views/HomeView');
-const PostView = require('./scripts/views/PostView');
-const UserView = require('./scripts/views/UserView');
 const HomeController = require('./scripts/controllers/HomeController');
 const PostController = require('./scripts/controllers/PostController');
 const UserController = require('./scripts/controllers/UserController');
@@ -55,7 +52,7 @@ class Application extends App {
         this.baseUrl = "https://baas.kinvey.com";
         this.appKey = "kid_SJu1XCSK";
         this.appSecret = "d1fe226ed4664a33b93d726845fe9c79";
-        this._guestCredentials = "ee209af4-7f4f-4be6-ace8-1a01a609600b.Bj7Cd4NVcNMjJy+pFC6fZVjqWmg75kI3OqYOhTr/gDE=";
+        this._guestCredentials = "77944a02-f127-44a1-b10b-e34c12bd90c0.jh1THGUz2N4EIs3zq1Kken6fWqY/8YPm04g36B3I/fY=";
 
         this._AuthService = new AuthorizationService(this.baseUrl, this.appKey, this.appSecret, this._guestCredentials);
         this._requester = new Requester(this._AuthService);
@@ -65,24 +62,25 @@ class Application extends App {
         this.selector = ".wrapper";
         this.mainContentSelector = ".main-content";
 
-        this.homeView = new HomeView(this.mainContentSelector, this.selector);
-        this.homeController = new HomeController(this.homeView, this._requester, this.baseUrl, this.appKey);
+        this.homeController = new HomeController(this._requester, this.baseUrl, this.appKey);
 
-        this.postView = new PostView(this.mainContentSelector, this.selector);
-        this.postController = new PostController(this.postView, this._requester, this.baseUrl, this.appKey);
+        this.postController = new PostController(this._requester, this.baseUrl, this.appKey);
 
-        this.userView = new UserView(this.mainContentSelector, this.selector);
-        this.userController = new UserController(this.userView, this._requester, this.baseUrl, this.appKey);
+        this.userController = new UserController(this._requester, this.baseUrl, this.appKey);
 
         initEventServices();
 
         this._homeRouteHandler = () => this.homeController.showPage(this._AuthService.isLoggedIn(), showPopup, this._store);
-
         onRoute("#/", this._homeRouteHandler);
 
+        this._singlePostHandler = (postId) => {
+            this.homeController.showSinglePost(postId, this._store);
+        };
 
-        onRoute("#/post-:id", function () {
-
+        onRoute("#/post-:id", () => {
+            let postId = $(location).attr('href');
+            let id = postId.substr(postId.length - 1);
+            this._singlePostHandler(id)
         });
 
         this._showLoginHandler = () => this.userController.showLoginPage(this._AuthService.isLoggedIn(), triggerEvent, this._store);

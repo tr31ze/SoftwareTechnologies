@@ -14,11 +14,11 @@ module.exports = class HomeController {
 
     showPage(loggedIn, showPopup, store) {
         let recentPosts = [];
+        console.log(store);
         this._requester.get(this._baseServiceUrl,
 
             data => {
                 let currentId = 1;
-
                 data.sort((elem1, elem2) => {
                    let date1 = new Date(elem1._kmd.ect);
                    let date2 = new Date(elem2._kmd.ect);

@@ -4,9 +4,9 @@ const React = require('react');
 const Component = require('../../base/Component');
 
 const MainContent = require('./components/MainContent');
-const Login = require('../Login');
-const Register = require('../Register');
-const Footer = require('../Footer');
+const Login = require('../User/components/Login');
+const Register = require('../User/components/Register');
+const Footer = require('../../app/components/Footer');
 
 let MainComponent = null;
 class WelcomeGuest extends Component {

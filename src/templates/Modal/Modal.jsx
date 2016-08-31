@@ -4,6 +4,7 @@ const React = require('react');
 const Component = require('../../base/Component');
 
 const ModalWindow = require('react-modal');
+const CommentBox = require('../Posts/components/CommentsBox');
 
 class Modal extends Component {
 
@@ -48,13 +49,19 @@ class Modal extends Component {
                     onAfterOpen={this.afterOpen}
                     onRequestClose={this.props.closeModal}
                     >
-                    <div className="single-post">
+                    <div className="single-post-modal">
                         <article>
-                            <h3 className="title">{post ? post.title : null}</h3>
+                            <h2 className="title">{post ? post.title : null}</h2>
                             <p className="subtitle">Posted on {post ? post.date : null} by {post ? post.author : null}</p>
                             <p className="content">{post ? post.content : null}</p>
                         </article>
+                        <div className="post-link">
+                            <a href={post ? post.link : null}>See the full article here</a>
+                        </div>
+                        {post ? post.comments ? <CommentBox comments={post.comments}/> : null : null}
                     </div>
+
+
                     <button onClick={this.props.closeModal}>close</button>
 
                 </ModalWindow>

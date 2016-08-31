@@ -4,8 +4,8 @@ const React = require('react');
 const Component = require('../../base/Component');
 
 const MainContent = require('./components/MainContent');
-const CreatePost = require('../CreatePost');
-const Footer = require('../Footer');
+const CreatePost = require('../Posts/CreatePost');
+const Footer = require('../../app/components/Footer');
 
 let MainComponent = null;
 

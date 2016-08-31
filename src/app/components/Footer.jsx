@@ -1,7 +1,7 @@
 'use strict';
 
 const React = require('react');
-const Component = require('../base/Component');
+const Component = require('../../base/Component');
 
 class Footer extends Component {
 

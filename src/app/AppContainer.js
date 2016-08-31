@@ -10,7 +10,7 @@ const GuestView = require('../templates/Guest/WelcomeGuest');
 const UserView = require('../templates/User/WelcomeUser');
 const GuestHeader = require('./components/GuestHeader');
 const UserHeader = require('./components/UserHeader');
-const Footer = require('../templates/Footer');
+const Footer = require('./components/Footer');
 
 import {triggerEvent, redirectUrl} from '../scripts/libs/framework'
 

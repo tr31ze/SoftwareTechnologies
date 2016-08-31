@@ -15,6 +15,11 @@ module.exports = class PostController {
 
     createPost(data, showPopup, redirectUrl, store) {
         //TODO: validation
+        if(!data.author.length || data.content.length < 20 || !data.title.length) {
+            showPopup('error', 'Something is missing in the article');
+            return;
+        }
+
         this._requester.post(this._baseServiceUrl, data, response => {
             showPopup('success', "Successfully created Post");
             redirectUrl('#/');
