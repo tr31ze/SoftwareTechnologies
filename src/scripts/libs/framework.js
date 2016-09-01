@@ -70,7 +70,7 @@ export function initEventServices() {
     _router = Sammy(function () {
         //Here we put all pre-initialized functions, event handlers, and so on...
 
-        this.bind('redirectUrl', function (ev, url) {
+        this.bind('redirectUrl', function(ev, url) {
             this.redirect(url);
         });
     });

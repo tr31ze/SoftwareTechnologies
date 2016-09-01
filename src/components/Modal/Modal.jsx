@@ -9,7 +9,7 @@ const CommentBox = require('../Posts/components/CommentsBox');
 class Modal extends Component {
 
     afterOpen() {
-        console.log("Opne");
+        console.log("Open");
     }
 
     render() {

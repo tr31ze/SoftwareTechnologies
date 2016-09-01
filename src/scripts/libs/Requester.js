@@ -31,7 +31,7 @@ class Requester {
             url: url,
             headers: headers,
             data: JSON.stringify(data) || null,
-            beforeSend: function () {
+            beforeSend: () => {
                 if ($("#loader-modal").length) {
                     $("#loader-modal").css("display", "block");
                     $(".wrapper").css("display", "none");
@@ -39,7 +39,7 @@ class Requester {
             },
             success: successCallBack,
             error: errorCallBack,
-            complete: function () {
+            complete: () => {
                 if ($("#loader-modal").length) {
                     $("#loader-modal").css("display", "none");
                     $(".wrapper").css("display", "inline-block");

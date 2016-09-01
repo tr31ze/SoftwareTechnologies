@@ -6,8 +6,8 @@ const ReactDOM = require('react-dom');
 const Container = require('react-redux-oop').Container;
 
 const Background = require('./components/Background');
-const GuestView = require('../templates/Guest/WelcomeGuest');
-const UserView = require('../templates/User/WelcomeUser');
+const GuestView = require('../components/Guest/WelcomeGuest');
+const UserView = require('../components/User/WelcomeUser');
 const GuestHeader = require('./components/GuestHeader');
 const UserHeader = require('./components/UserHeader');
 const Footer = require('./components/Footer');
@@ -38,11 +38,27 @@ class AppContainer extends Container {
     };
 
     render() {
-        console.log(this.props);
         return (
             <div className="app">
                 {this.props.isLogged ? <UserHeader /> : <GuestHeader />}
-                {this.props.isLogged ? <UserView isLogged={this.props.isLogged} user={this.props.user} posts={this.props.posts} recentPosts={this.props.recentPosts} modal={this.props.modal} closeModal={this.actions.closeModal} location={this.props.location} triggerEvent={this.actions.triggerEvent}/> : <GuestView posts={this.props.posts} location={this.props.location} triggerEvent={this.actions.triggerEvent}/>}
+                {this.props.isLogged ?
+                    <UserView
+                        isLogged={this.props.isLogged}
+                        user={this.props.user}
+                        posts={this.props.posts}
+                        recentPosts={this.props.recentPosts}
+                        modal={this.props.modal}
+                        closeModal={this.actions.closeModal}
+                        location={this.props.location}
+                        triggerEvent={this.actions.triggerEvent}
+                    />
+                    :
+                    <GuestView
+                        posts={this.props.posts}
+                        location={this.props.location}
+                        triggerEvent={this.actions.triggerEvent}
+                    />
+                }
                 <Footer />
                 <Background/>
             </div>

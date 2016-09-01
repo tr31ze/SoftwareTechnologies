@@ -14,8 +14,6 @@ const AppReducers = {
     'SET_DATA': {
         '*': [
             (state = AppState, action) => {
-                console.log(state);
-                console.log(action);
                 return state
                     .set('posts', action.action.data)
                     .set('recentPosts', action.action.recentPosts)

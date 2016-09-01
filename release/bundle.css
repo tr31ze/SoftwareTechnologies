@@ -1,0 +1,174 @@
+.wrapper {
+    /*background: url("../images/background.png") no-repeat center center fixed;*/
+    background-size: cover;
+}
+
+.user-login-block {
+    border-radius: 15px;
+    background-color: aliceblue;
+    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);
+    margin: 10% auto;
+    width: 35%;
+    height: 55%;
+    padding: 10px;
+    text-align: center;
+}
+
+form {
+    margin: 0 auto;
+    text-align: center;
+    display: block;
+}
+
+.form-title {
+    font: 18px Oswald;
+    font-weight: 400;
+    color: lightblue;
+    padding: 0 5px 5px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+input {
+    border-radius: 30px;
+    border: 3px solid #f2f2f2;
+    width: 60%;
+    height: 35px;
+    margin: 0 auto 10px;
+    text-align: center;
+}
+
+input:focus {
+    font: 12px Lato;
+    font-weight: 100;
+    outline: none;
+    border: 3px solid lightblue;
+}
+
+button {
+    font: 16px Lato;
+    color: white;
+    background-color: lightblue;
+    padding: 8px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 30px;
+    width: 25%;
+}
+
+button:hover {
+    background-color: #565656;
+}
+
+.form-link {
+    text-decoration: none;
+    color: lightblue;
+    font: 16px Lato;
+    font-weight: 900;
+    padding: 10px;
+}
+
+#register-title {
+    width: 200px;
+}
+a {
+    text-decoration: none;
+    color: #565656;
+}
+
+.dot {
+    margin-top: 13px;
+    margin-right: 10px;
+    float: left;
+    width: 20px;
+    border-radius: 40px;
+    background-color: lightblue;
+}
+
+.title {
+    font: 32px Oswald;
+    font-weight: 600;
+}
+
+.subtitle {
+    font: 16px Lato;
+    font-weight: 100;
+    margin-left: 3%;
+}
+
+.content {
+    padding-top: 2.5%;
+    font: 16px Lato;
+    font-weight: 500;
+    width: 80%;
+    margin-left: 3%;
+    word-wrap: break-word;
+}
+
+.articles {
+    margin: 0 auto;
+    width: 70%;
+}
+
+.single-post {
+    margin-bottom: 5%;
+}
+.new-post-title {
+    width: 250px;
+}
+
+.new-post-wrapper {
+    margin: 0 auto;
+    width: 60%;
+
+}
+
+.new-post-block {
+    background-color: aliceblue;
+    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    border-radius: 20px;
+    margin-top: 20%;
+}
+
+#editor-title {
+    color: #565656;
+    font-weight: bold;
+    text-transform: uppercase;
+    font: 24px Lato-Black;
+    text-align: center;
+}
+
+#post-form {
+    background: aliceblue;
+    border-radius: 20px;
+}
+
+.single-element-form {
+    display: inline-block;
+    width: 40%;
+    padding-top: 10px;
+}
+
+.content-field {
+    resize: none;
+    border: 3px solid #f2f2f2;
+    outline: none;
+    width: 550px;
+    height: 300px;
+    border-radius: 15px;
+    text-align: left;
+    font: 12px Lato-Light;
+    padding: 10px;
+}
+
+.content-field:focus {
+    font: 12px Lato;
+    font-weight: 100;
+    outline: none;
+    border: 3px solid lightblue;
+}
+
+
+

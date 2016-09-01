@@ -3,6 +3,9 @@
 const Controller = require('react-redux-oop').Controller;
 const Server = require('../Server');
 
+/*
+I am not using this controller in the project yet...
+ */
 
 class BaseController extends Controller {
     static Actions = {};

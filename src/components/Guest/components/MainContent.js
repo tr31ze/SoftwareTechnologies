@@ -11,7 +11,6 @@ class MainContent extends Component {
         let filteredPosts = [];
         if(this.props.posts) {
             this.props.posts.map(post => {
-                console.log(post);
                 if(!post.private) {
                    filteredPosts.push(post);
                 }
