@@ -14,7 +14,7 @@ class MainContent extends Component {
                     <h3>Learn React</h3>
                 </header>
                 <Posts isLogged={this.props.isLogged} posts={this.props.posts}/>
-                <Modal isOpen={this.props.modal.isOpen} post={this.props.modal.post} closeModal={this.props.closeModal}></Modal>
+                <Modal isOpen={this.props.modal.isOpen} post={this.props.modal.post} triggerEvent={this.props.triggerEvent} closeModal={this.props.closeModal}></Modal>
             </main>
         )
     }

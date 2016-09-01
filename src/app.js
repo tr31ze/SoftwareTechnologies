@@ -50,7 +50,7 @@ class Application extends App {
         this.baseUrl = "https://baas.kinvey.com";
         this.appKey = "kid_SJu1XCSK";
         this.appSecret = "d1fe226ed4664a33b93d726845fe9c79";
-        this._guestCredentials = "6bfcd4f2-bcc6-46f4-a6bb-f11b95794aec.e6v/M9E7/E750X3i1TNscDv3taEXZwGWI6e1Bj0MgY8=";
+        this._guestCredentials = "d0f1995a-bc7c-400c-a1ee-c97823ea6166.3bRdYQ8Wtk3WNNS5wV0uSubp+1yu/b/dIpLGY4PV1eM=";
 
         this._AuthService = new AuthorizationService(this.baseUrl, this.appKey, this.appSecret, this._guestCredentials);
         this._requester = new Requester(this._AuthService);
@@ -100,6 +100,9 @@ class Application extends App {
 
         this._createPost = (ev, data) => this.appController.createPost(data, showPopup, redirectUrl, this._store);
         bindEventHandler('createPost', this._createPost);
+
+        this._commentHandler = (ev, data) => this.appController.leaveComment(data, showPopup, redirectUrl, this._store);
+        bindEventHandler('leaveComment', this._commentHandler);
 
         run('#/');
 

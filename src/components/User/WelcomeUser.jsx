@@ -20,7 +20,7 @@ class WelcomeUser extends Component {
                 MainComponent = <Register />;
                 break;
             default:
-                MainComponent = <MainContent isLogged={this.props.isLogged} modal={this.props.modal} closeModal={this.props.closeModal} posts={this.props.posts} />;
+                MainComponent = <MainContent isLogged={this.props.isLogged} triggerEvent={this.props.triggerEvent} modal={this.props.modal} closeModal={this.props.closeModal} posts={this.props.posts} />;
                 break;
         }
         return MainComponent;

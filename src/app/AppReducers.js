@@ -39,6 +39,17 @@ const AppReducers = {
         ]
     },
 
+    'LEAVE_COMMENT': {
+        '*': [
+            (state = AppState, action) => {
+                console.log(state.posts);
+                let postId = action.data.postId - 1;
+                let postComments = action.data.comments;
+                return state.setIn(['posts', postId, 'comments'], postComments)
+            }
+        ]
+    },
+
     'CLEAR_MODAL': {
         'modal': [
             (state = AppState.modal) => {

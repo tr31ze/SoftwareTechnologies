@@ -17,7 +17,6 @@ class Login extends Component {
             password: this.refs.password.value
         };
         this.props.triggerEvent('login', data);
-        this.forceUpdate();
     }
 
     render() {

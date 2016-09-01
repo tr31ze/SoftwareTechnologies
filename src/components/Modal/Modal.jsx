@@ -5,6 +5,7 @@ const Component = require('../../base/Component');
 
 const ModalWindow = require('react-modal');
 const CommentBox = require('../Posts/components/CommentsBox');
+const LeaveCommentBox = require('../Posts/components/LeaveComment');
 
 class Modal extends Component {
 
@@ -59,6 +60,7 @@ class Modal extends Component {
                             <a href={post ? post.link : null}>See the full article here</a>
                         </div>
                         {post ? post.comments ? <CommentBox comments={post.comments}/> : null : null}
+                        <LeaveCommentBox post={post} triggerEvent={this.props.triggerEvent}/>
                     </div>
 
 

@@ -69,12 +69,30 @@ class AppController extends Controller {
             showPopup('error', 'Something is missing in the article');
             return;
         }
-
+        console.log(data);
         this._requester.post(this._baseServiceUrl, data, response => {
             showPopup('success', "Successfully created Post");
             redirectUrl('#/');
         }, error => {
             showPopup('error', 'Failed to create post');
+        })
+    }
+
+    leaveComment(data, showPopup, redirectUrl, store) {
+        console.log(data);
+        let url = this._baseServiceUrl + '/' + data._id;
+        if(data.comments[0].content.length < 1) {
+            showPopup('error', 'Comment is empty');
+            return;
+        }
+
+        let comment = data.comments[0];
+        store.dispatch({type: 'LEAVE_COMMENT', data});
+        this._requester.put(url, data, response => {
+            showPopup('success', "Successfully commented a Post");
+            redirectUrl('#/');
+        }, error => {
+            showPopup('error', 'Authentication failed, check the server');
         })
     }
 
@@ -120,12 +138,12 @@ class AppController extends Controller {
             this._userServiceUrl,
             data,
             data => {
-                showPopup('success', 'Successfully registered');
 
-                // redirectUrl('#/login');
+                redirectUrl('#/login');
 
                 let location = 'login';
                 store.dispatch({type: 'SET_LOCATION', action: {location}});
+                showPopup('success', 'Successfully registered');
 
             }, error => {
                 showPopup('error', 'Something went wrong');
@@ -142,6 +160,7 @@ class AppController extends Controller {
         this._requester.post(requestUrl, data, response => {
             showPopup('success', 'Successfully logged in');
             sessionStorage.setItem('username', response.username);
+            console.log(response);
             sessionStorage.setItem('_authToken', response._kmd.authtoken);
             sessionStorage.setItem('fullName', response.fullName);
             store.dispatch({type: 'LOGIN', response});
